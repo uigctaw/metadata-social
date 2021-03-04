@@ -2,7 +2,7 @@ terraform {
   required_providers {
     digitalocean = {
       source = "digitalocean/digitalocean"
-      version = "~> 2.4.0"
+      version = "~> 2.5.1"
     }
   }
 }
@@ -11,33 +11,25 @@ provider "digitalocean" {
   token = var.do_token
 }
 
-data "digitalocean_ssh_key" "terraform" {
+resource "digitalocean_ssh_key" "main" {
   name = var.do_key_name
+  public_key = file(var.public_key_path)
 }
 
 resource "digitalocean_droplet" "cluster" {
     for_each = toset(["lon1", "ams3"])
 
-    image = "ubuntu-20-04-x64"
+    image = "docker-20-04"
     name = "cluster-${each.key}"
     region = each.key
     size = "s-1vcpu-1gb"
     private_networking = true
-    ssh_keys = [data.digitalocean_ssh_key.terraform.id]
-
-    connection {
-        host = self.ipv4_address
-        user = "root"
-        type = "ssh"
-        private_key = var.private_key
-        timeout = "2m"
-    }
-
-    provisioner "remote-exec" {
-        inline = [
-            "export PATH=$PATH:/usr/bin",
-            "sudo apt update",
-            "sudo apt -y install nginx"
-        ]
-    }
+    ssh_keys = [digitalocean_ssh_key.main.fingerprint]
+    user_data = templatefile(
+        "${path.module}/cloud_init.yaml",
+        {
+            droplet_uname = var.droplet_uname,
+            public_key = digitalocean_ssh_key.main.public_key,
+        }        
+    )
 }

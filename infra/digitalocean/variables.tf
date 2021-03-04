@@ -1,11 +1,15 @@
-variable "do_key_name" {
-  sensitive = true
-}
-
 variable "do_token" {
   sensitive = true
 }
 
-variable "private_key" {
+variable "droplet_uname" {
+  sensitive = true
+}
+
+variable "public_key_path" {
+  sensitive = true
+}
+
+variable "do_key_name" {
   sensitive = true
 }
