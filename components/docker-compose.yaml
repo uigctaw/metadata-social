@@ -2,12 +2,16 @@ version: "3.7"
 services:
   backend:
     image: uigctaw/metadata-social:nginx-test
+    deploy:
+      mode: global
     volumes:
       - myapp:/usr/share/nginx/html
     ports:
-     - 8080:80
+      - 80:80
   app:
     image: uigctaw/metadata-social:pyapp
+    deploy:
+      mode: global
     volumes:
       - myapp:/app
 volumes:

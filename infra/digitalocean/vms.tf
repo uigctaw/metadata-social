@@ -17,11 +17,15 @@ resource "digitalocean_ssh_key" "main" {
 }
 
 resource "digitalocean_droplet" "cluster" {
-    for_each = toset(["lon1", "ams3"])
+    for_each = { 
+        lon-a = "lon1",
+        lon-b = "lon1",
+        ams-a = "ams3",
+    }
 
     image = "docker-20-04"
     name = "cluster-${each.key}"
-    region = each.key
+    region = each.value
     size = "s-1vcpu-1gb"
     private_networking = true
     ssh_keys = [digitalocean_ssh_key.main.fingerprint]
