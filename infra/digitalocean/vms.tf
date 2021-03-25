@@ -16,15 +16,21 @@ resource "digitalocean_ssh_key" "main" {
   public_key = file(var.public_key_path)
 }
 
-resource "digitalocean_droplet" "cluster" {
-    for_each = { 
-        lon-a = "lon1",
-        lon-b = "lon1",
-        ams-a = "ams3",
+locals {
+    first_manager_name = "lon-a"
+    first_manager_region = "lon1"
+    managers = {
+        (local.first_manager_name) = local.first_manager_region,
+        "lon-b" = "lon1",
+        "ams-a" = "ams3",
     }
+}
+
+resource "digitalocean_droplet" "cluster" {
+    for_each = local.managers
 
     image = "docker-20-04"
-    name = "cluster-${each.key}"
+    name = each.key
     region = each.value
     size = "s-1vcpu-1gb"
     private_networking = true

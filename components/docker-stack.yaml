@@ -1,15 +1,19 @@
 version: "3.7"
 services:
   backend:
-    image: uigctaw/metadata-social:nginx-test
+    image: uigctaw/metadata-social-nginx:test
     deploy:
       mode: global
     volumes:
       - myapp:/usr/share/nginx/html
+      - type: bind
+        source: /srv/certs/live
+        target: /srv/certs/live
+
     ports:
-      - 80:80
+      - 443:443
   app:
-    image: uigctaw/metadata-social:pyapp
+    image: uigctaw/metadata-social-pyapp:test
     deploy:
       mode: global
     volumes:

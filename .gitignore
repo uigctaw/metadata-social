@@ -1,8 +1,7 @@
 .*
 !/.gitignore
 nocicd.sh
-dist
 *.egg-info
-**/__pycache__
-notes
-infra/**/*terraform*
+__pycache__
+local_util*
+*terraform*
