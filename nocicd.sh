@@ -91,7 +91,7 @@ log 'Creating stack file'
 log 'Committing, tagging and pushing code'
 git commit
 git tag -a v$VERSION -m "Deployment, v$VERSION" 
-git push origin $VERSION
+git push origin v$VERSION
 
 log 'Building and pushing images'
 ./components/build_and_push_images.sh $VERSION $ROOT
