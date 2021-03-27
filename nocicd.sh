@@ -98,7 +98,7 @@ log 'Building and pushing images'
 ./components/build_and_push_images.sh $VERSION $ROOT
 
 log DEPLOYING!
-update_swarm.sh $ROOT
+./update_swarm.sh $ROOT
 
 log 'Writing new version file'
 echo $VERSION > $VERSION_FILE

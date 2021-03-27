@@ -2,7 +2,7 @@
 version: "3.7"
 services:
   backend:
-    image: uigctaw/metadata-social-nginx:0.0.3
+    image: uigctaw/metadata-social-nginx:0.0.4
     deploy:
       mode: global
     volumes:
@@ -14,7 +14,7 @@ services:
     ports:
       - 443:443
   app:
-    image: uigctaw/metadata-social-pyapp:0.0.3
+    image: uigctaw/metadata-social-pyapp:0.0.4
     deploy:
       mode: global
     volumes:
