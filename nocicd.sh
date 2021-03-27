@@ -82,13 +82,14 @@ echo -e "CRASHED\n$CURRENT" > $VERSION_FILE
 log 'Switching to "main" branch'
 git checkout main
 
-log 'Running tests'
-./test.sh  
-
 log 'Creating stack file'
 ./components/stack_file_generator.py --version $VERSION
 
-log 'Committing, tagging and pushing code'
+log 'Running tests'
+./test.sh  
+
+log 'Adding ALL, committing, tagging and pushing code'
+git add .
 git commit
 git tag -a v$VERSION -m "Deployment, v$VERSION" 
 git push origin v$VERSION
