@@ -1,7 +1,7 @@
 .*
 !/.gitignore
-nocicd.sh
 *.egg-info
 __pycache__
 local_util*
 *terraform*
+release.log
