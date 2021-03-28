@@ -6,7 +6,8 @@ ABSOLUTE_CONTENT_PATH = str(pathlib.Path('/') / STATIC_FILES_FOLDER)
 
 class RealFileSystem:
 
-    open = open
+    def open(self, path, mode='r'):
+        return open(pathlib.Path('/').joinpath(*path), mode)
 
     def mkdir(self, path, exist_ok=False):
         pathlib.Path('/').joinpath(*path).mkdir(exist_ok=exist_ok)
