@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 
-from html_builder import create_file, STATIC_FILES_DIR
+from html_builder import create_file, STATIC_FILES_FOLDER
 
 
 class Directory:
@@ -106,6 +106,6 @@ MFS = MockFileSystem
 def test_file_is_written():
     mfs = MFS()
     create_file(mfs)
-    with mfs.open(STATIC_FILES_DIR + ('index.html',)) as fh:
+    with mfs.open((STATIC_FILES_FOLDER, 'index.html',)) as fh:
         text = fh.read()
     assert text == 'ok'

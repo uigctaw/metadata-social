@@ -1,6 +1,6 @@
 import pathlib
 
-STATIC_FILES_DIR = ('data',)
+STATIC_FILES_FOLDER = 'data'
 
 
 class RealFileSystem:
@@ -12,8 +12,8 @@ class RealFileSystem:
 
 
 def create_file(fs):
-    fs.mkdir(STATIC_FILES_DIR, exist_ok=True)
-    with fs.open(STATIC_FILES_DIR + ('index.html',), 'w') as fh:
+    fs.mkdir((STATIC_FILES_FOLDER,), exist_ok=True)
+    with fs.open((STATIC_FILES_FOLDER, 'index.html',), 'w') as fh:
         fh.write('ok')
 
 
