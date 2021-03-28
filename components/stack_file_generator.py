@@ -3,36 +3,106 @@
 import argparse
 import pathlib
 import string
-from html_builder import html_builder
+import textwrap
 
-HTML_BUILDER_NAME = html_builder.__name__.split('.')[-1]
+TEST_VERSION = 'test'
 
-TEMPLATE = f'''
-version: "3.7"
-services:
-  backend:
-    image: uigctaw/metadata-social-nginx:{{version}}
-    deploy:
-      mode: global
+
+class MetaConfig(type):
+    """Stricly enforce what attributes config can have."""
+
+    def __new__(mcs, name, bases, namespace):
+        cls = super().__new__(mcs, name, bases, namespace)
+        if cls.__name__ != 'Config':
+            extra_attributes = set(vars(cls)) - set(vars(Config))
+            public_extra_attrs = [
+                ea for ea in extra_attributes if not ea.startswith('_')
+            ]
+            missing_attributes = set(vars(Config)) - {
+                    k for k, v in vars(cls).items() if v is not NotImplemented
+            }
+            public_missing_attrs = [
+                ma for ma in missing_attributes if not ma.startswith('_')
+            ]
+            if public_extra_attrs:
+                raise AttributeError(
+                    '{cls} has extra attributes: %s' % public_extra_attrs       
+                )
+            if public_missing_attrs:
+                raise AttributeError(
+                    f'{cls} is missing attributes: %s' % public_missing_attrs
+                )
+        return cls
+
+
+class Config(metaclass=MetaConfig):
+    
+    nginx_img = NotImplemented
+    nginx_port_binding = NotImplemented
+    docker_file_name = NotImplemented
+    html_builder_img = NotImplemented
+    nginx_bind_certs = NotImplemented
+
+
+class Test(Config):
+
+    nginx_img = 'nginx'
+    nginx_port_binding = '8080:80'
+    docker_file_name = 'docker-compose.yaml'
+    html_builder_img = 'html_builder:{version}'
+    nginx_bind_certs = False
+
+
+class Prod(Config):
+
+    nginx_img = 'uigctaw/metadata-social-nginx:{version}'
+    nginx_port_binding = '443:443'
+    docker_file_name = 'docker-stack.yaml'
+    html_builder_img = 'uigctaw/metadata-social-html_builder:{version}'
+    nginx_bind_certs = True
+
+
+DELETE_LINE_COMMENT = '# <delete>'
+
+
+def get_docker_filer(config, *, version):
+    maybe_delete = '' if config.nginx_bind_certs else DELETE_LINE_COMMENT
+
+    base = textwrap.dedent(f'''
+    version: "3.7"
+    services:
+      backend:
+        image: {config.nginx_img}
+        deploy:
+          mode: global
+        volumes:
+          - nginx_content:/usr/share/nginx/html
+          - type: bind              {maybe_delete}   
+            source: /srv/certs/live {maybe_delete}   
+            target: /srv/certs/live {maybe_delete}   
+
+        ports:
+          - {config.nginx_port_binding}
+      app:
+        image: {config.html_builder_img}
+        deploy:
+          mode: global
+        volumes:
+          - nginx_content:/data
     volumes:
-      - nginx_content:/usr/share/nginx/html
-      - type: bind
-        source: /srv/certs/live
-        target: /srv/certs/live
+        nginx_content:
+    ''')
+    with_lines_to_delete = TemplateFormatter().format(base, version=version)
+    formatted = '\n'.join(
+            line
+            for line in 
+            with_lines_to_delete.splitlines()
+            if not line.strip().endswith(DELETE_LINE_COMMENT)
+            )
+    return formatted
 
-    ports:
-      - 443:443
-  app:
-    image: uigctaw/metadata-social-{HTML_BUILDER_NAME}:{{version}}
-    deploy:
-      mode: global
-    volumes:
-      - nginx_content:{html_builder.ABSOLUTE_CONTENT_PATH}
-volumes:
-    nginx_content:
-'''
 
-TARGET_FILE_NAME = pathlib.Path(__file__).parent.joinpath('docker-stack.yaml')
+ROOT = pathlib.Path(__file__).parent
 
 
 class TemplateFormatter(string.Formatter):
@@ -47,15 +117,18 @@ class TemplateFormatter(string.Formatter):
             raise RuntimeError('The template does not need %s ' % (diff,))
 
 
-def write(string):
-    with open(TARGET_FILE_NAME, 'w') as fh:
+def write(config, string):
+    with open(ROOT.joinpath(config.docker_file_name), 'w') as fh:
         fh.write(string)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--version', help='Version tags of images')
+    parser.add_argument(
+            '--version', help='Version tags of images', required=True,
+            )
     args = parser.parse_args()
-    kwargs = {k: v for k, v in vars(args).items() if v is not None}
-    formatted = TemplateFormatter().format(TEMPLATE, **kwargs)
-    write(formatted)
+    version = args.version
+    config = Test if version == TEST_VERSION else Prod
+    file = get_docker_filer(config, version=version)
+    write(config, file)

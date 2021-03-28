@@ -6,6 +6,7 @@ authors = ["uigctaw <uigctaw@protonmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+htmlclasses = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
