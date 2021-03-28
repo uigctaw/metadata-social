@@ -1,10 +1,15 @@
 #!/bin/python3
 
-TEMPLATE = '''
+import argparse
+import pathlib
+import string
+from html_builder import html_builder
+
+TEMPLATE = f'''
 version: "3.7"
 services:
   backend:
-    image: uigctaw/metadata-social-nginx:{version}
+    image: uigctaw/metadata-social-nginx:{{version}}
     deploy:
       mode: global
     volumes:
@@ -16,18 +21,14 @@ services:
     ports:
       - 443:443
   app:
-    image: uigctaw/metadata-social-pyapp:{version}
+    image: uigctaw/metadata-social-pyapp:{{version}}
     deploy:
       mode: global
     volumes:
-      - nginx_content:/data
+      - nginx_content:{html_builder.STATIC_FILES_DIR}
 volumes:
     nginx_content:
 '''
-
-import argparse
-import pathlib
-import string
 
 TARGET_FILE_NAME = pathlib.Path(__file__).parent.joinpath('docker-stack.yaml')
 
