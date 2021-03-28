@@ -5,6 +5,8 @@ import pathlib
 import string
 from html_builder import html_builder
 
+HTML_BUILDER_NAME = html_builder.__name__.split('.')[-1]
+
 TEMPLATE = f'''
 version: "3.7"
 services:
@@ -21,7 +23,7 @@ services:
     ports:
       - 443:443
   app:
-    image: uigctaw/metadata-social-pyapp:{{version}}
+    image: uigctaw/metadata-social-{HTML_BUILDER_NAME}:{{version}}
     deploy:
       mode: global
     volumes:
