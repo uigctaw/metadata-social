@@ -25,7 +25,7 @@ services:
     deploy:
       mode: global
     volumes:
-      - nginx_content:{html_builder.STATIC_FILES_FOLDER}
+      - nginx_content:{html_builder.ABSOLUTE_CONTENT_PATH}
 volumes:
     nginx_content:
 '''

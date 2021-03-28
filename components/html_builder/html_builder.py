@@ -1,6 +1,7 @@
 import pathlib
 
 STATIC_FILES_FOLDER = 'data'
+ABSOLUTE_CONTENT_PATH = str(pathlib.Path('/') / STATIC_FILES_FOLDER)
 
 
 class RealFileSystem:
