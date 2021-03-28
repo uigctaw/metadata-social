@@ -1,24 +1,23 @@
 
-    version: "3.7"
-    services:
-      backend:
-        image: nginx
-        deploy:
-          mode: global
-        volumes:
-          - nginx_content:/usr/share/nginx/html
-          - type: bind
-            source: /srv/certs/live
-            target: /srv/certs/live
-
-        ports:
-          - 80:8080
-      app:
-        image: uigctaw/metadata-social-html_builder:test
-        deploy:
-          mode: global
-        volumes:
-          - nginx_content:/data
+version: "3.7"
+services:
+  backend:
+    image: uigctaw/metadata-social-nginx:0.0.12
+    deploy:
+      mode: global
     volumes:
-        nginx_content:
-    
+      - nginx_content:/usr/share/nginx/html
+      - type: bind                 
+        source: /srv/certs/live    
+        target: /srv/certs/live    
+
+    ports:
+      - 443:443
+  app:
+    image: uigctaw/metadata-social-html_builder:0.0.12
+    deploy:
+      mode: global
+    volumes:
+      - nginx_content:/data
+volumes:
+    nginx_content:
