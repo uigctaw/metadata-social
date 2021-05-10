@@ -11,14 +11,13 @@ USAGE="
 Optional parameters:
 
 -h --help : Displays this documentation.
-
--r --root : `cd` to this directory at the start. Defaults to `pwd`.
 "
+
+ROOT=$(pwd)/$(dirname $0)
 
 while [[ $# -gt 0 ]]; do
     case $1 in 
         -v|--version) VERSION=$2; shift;;
-        -r|--root) ROOT=$2; shift;;
         -h|--help) HELP=1;;
         *) UNHANDLEDED_PARAMETER=$1;;
     esac
@@ -38,10 +37,6 @@ if [[ $VERSION == "" ]]; then
     echo "Missing -v"
     echo "Type -h for help"
     exit 1
-fi
-
-if [[ $ROOT == "" ]]; then
-    ROOT=$(pwd)
 fi
              
 if [[ ! $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then

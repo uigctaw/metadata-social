@@ -80,11 +80,11 @@ gitdb = ">=4.0.1,<5"
 
 [[package]]
 name = "htmlclasses"
-version = "0.2.2"
+version = "0.3.0"
 description = "Python in, HTML out."
 category = "main"
 optional = false
-python-versions = ">=3.8,<4.0"
+python-versions = ">=3.9,<4.0"
 
 [[package]]
 name = "mccabe"
@@ -271,8 +271,8 @@ python-versions = "*"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.8"
-content-hash = "9559a30823e442f453c3889d017cba7eca4ec084927fb6733866886d35641d5a"
+python-versions = "^3.9"
+content-hash = "08d98224702e291b4aa9e0dd0a6a4dcd3bf56b25ae4f01fbeadc7b87e1bdac2b"
 
 [metadata.files]
 atomicwrites = [
@@ -304,8 +304,8 @@ gitpython = [
     {file = "GitPython-3.1.14.tar.gz", hash = "sha256:be27633e7509e58391f10207cd32b2a6cf5b908f92d9cd30da2e514e1137af61"},
 ]
 htmlclasses = [
-    {file = "htmlclasses-0.2.2-py3-none-any.whl", hash = "sha256:05cec3ebe38921cddbdac805cda9bac3756cd59847719994f47195336969c2d1"},
-    {file = "htmlclasses-0.2.2.tar.gz", hash = "sha256:e4482136684fb595e73d2ef0b66a2c891b446547ebcd3dfb0075cc9de5ff4a65"},
+    {file = "htmlclasses-0.3.0-py3-none-any.whl", hash = "sha256:54a5e1d874212c6977d9779d090c2bc6b4cfd4a54191ca7902b3ffa5ebe4418e"},
+    {file = "htmlclasses-0.3.0.tar.gz", hash = "sha256:4b8b2bd6c5dfcde9873d73215736b473b2703c3e377b5b59168a435b3e853a15"},
 ]
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},

@@ -1,7 +1,7 @@
 # Goals
 
-This whole project is a one big learning exercise (with intention of the end
-product being useful).
+This whole project is a one big learning exercise (with the intention
+of the end product being still somewhat useful).
 
 I know very little about popular cloud related tools such as Kubernetes.
 
@@ -12,7 +12,7 @@ Learning wise my goal is to get some familiarity with:
 - Docker
 
 I would like the application to run in a few, say 3, distinct locations.
-This is to have some fault tolerance and to be able to do rolling upgrades.
+This is to have fault tolerance and to be able to do rolling upgrades.
 
 # Architecture
 
