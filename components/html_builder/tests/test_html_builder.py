@@ -126,4 +126,4 @@ def test_file_is_written():
     create_file(mfs)
     with mfs.open((STATIC_FILES_FOLDER, 'index.html',)) as fh:
         text = fh.read()
-    assert 'Aggregated public information' in text
+    assert 'open data' in text

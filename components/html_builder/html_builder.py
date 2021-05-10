@@ -60,19 +60,18 @@ class html(E):
 
                 class h1:
 
-                    TEXT = 'Aggregated public data about British schools'
+                    TEXT = 'British schools - open data'
 
-                class p(E):
+                # class p(E):
 
-                    TEXT = E(
-                        'The data presented on the map below can also be'
-                            + ' accessed in',
-                        E.a('a tabular form', href = 'tbd'),
-                        'TODO: legend',
-                        )
+                    # TEXT = E(
+                        # 'The data presented on the map below can also be'
+                            # + ' accessed in',
+                        # E.a('a tabular form', href = 'tbd'),
+                        # 'TODO: legend',
+                        # )
 
-            svg = get_british_map()
-                
+            # svg = get_british_map()
 
 
 
