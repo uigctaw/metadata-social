@@ -13,7 +13,7 @@ Optional parameters:
 -h --help : Displays this documentation.
 "
 
-ROOT=$(pwd)/$(dirname $0)
+ROOT=$(dirname $(realpath $0))
 
 while [[ $# -gt 0 ]]; do
     case $1 in 
